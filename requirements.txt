@@ -1,0 +1,11 @@
+Flask==1.0.2
+Flask-RESTful==0.3.6
+Flask-SQLAlchemy==2.3.2
+Flask-Cors==3.0.7
+PyJWT==1.6.4
+marshmallow==2.16.3
+marshmallow-sqlalchemy==0.15.0
+openpyxl==2.5.12
+passlib==1.7.1
+pyyaml==3.13
+gunicorn

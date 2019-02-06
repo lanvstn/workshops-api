@@ -1,0 +1,148 @@
+events:
+  - id: 1
+    name: workshops2018
+    available: true
+    workshops:
+      - id: 10001
+        title: Web API met Flask
+        description: Leer webapplicaties schrijven met Python 3 en Flask. We gaan een simpele API maken die JSON objecten uit een bestand doorgeeft. Als je deze kiest mag je in de namiddag geen data visualisatie doen.
+        moment: 1. Voormiddag
+        limit: 5
+        targetGroup: app
+        registrations:
+          - 104
+
+      - id: 10002
+        title: Webapplicaties met Express
+        description: Leer webapplicaties schrijven met Node.js en Express. We gaan een simpele blog maken waar je artikels aan kan toevoegen.
+        moment: 1. Voormiddag
+        limit: 3
+        targetGroup: app
+        registrations:
+          - 100
+          - 102
+          - 103
+
+      - id: 10003
+        title: Kubernetes
+        description: Maak je eigen Kubernetes cluster met een paar Docker containers (die krijg je van ons). Als je deze kiest moet je in de namiddag Systeemontwerp doen.
+        moment: 1. Voormiddag
+        limit: 3
+        targetGroup: infra
+        registrations:
+          - 105
+          - 107
+
+      - id: 10004
+        title: Elastic Stack
+        description: Je maakt een Elastic stack opstelling met Logstash, ElasticSearch en Kibana. Daarmee ga je nginx logs visualiseren.
+        moment: 1. Voormiddag
+        limit: 3
+        targetGroup: infra
+        registrations:
+          - 106
+
+      - id: 10005
+        title: Webapp CTF
+        description: De eerste helft bestaat uit een korte herhaling van web app security. De tweede helft van de workshop is een CTF tussen 2 teams waar je zoveel mogelijk vulnerabilities in een website moet zoeken.
+        moment: 2. Namiddag
+        limit: 6
+        targetGroup: infra
+        registrations:
+          - 105
+
+      - id: 10006
+        title: AWS Basics
+        description: Leer hoe je met AWS werkt. We gaan EC2, S3, DynamoDB en Lambda gebruiken. De accounts worden door de school gegeven.
+        moment: 2. Namiddag
+        limit: 10
+        targetGroup: infra
+        registrations:
+          - 106
+
+      - id: 10007
+        title: Data analyse met Python
+        description: Hier maak je kennis met data analyse libraries voor Python, zoals NumPy, Pandas, matplotlib en Seaborn. Als je deze kiest mag je in de voormiddag geen Flask doen.
+        moment: 2. Namiddag
+        limit: 5
+        targetGroup: app
+        registrations:
+          - 100
+          - 101
+
+      - id: 10008
+        title: Systeemontwerp
+        description: Uiteraard bestaan grote webapplicaties zoals YouTube of Twitter niet uit 1 server waar een Apache en MySQL op staat. Maak kennis met load balancing, high availability, replicatie en microservices. Als je deze kiest moet je in de voormiddag Kubernetes doen.
+        moment: 2. Namiddag
+        limit: 7
+        targetGroup: infra
+        registrations:
+          - 107
+
+      - id: 10009
+        title: React
+        description: Leer interactieve webapplicaties ontwerpen met Javascript en React.
+        moment: 2. Namiddag
+        limit: 7
+        targetGroup: app
+        registrations:
+          - 102
+
+    workshop_links:
+      - workshop1_id: 10001
+        workshop2_id: 10007
+        link_type: exclusive
+      - workshop1_id: 10003
+        workshop2_id: 10008
+        link_type: inclusive
+
+    users:
+      - id: 100
+        full_name: Nick
+        targetGroup: app
+        user_class: 4ITF
+      - id: 101
+        full_name: Jef
+        targetGroup: app
+        user_class: 4ITF
+      - id: 102
+        full_name: Lucas
+        targetGroup: app
+        user_class: 5ITF
+      - id: 103
+        full_name: Luc
+        targetGroup: app
+        user_class: 5ITF
+      - id: 104
+        full_name: Koen
+        targetGroup: app
+        user_class: 5ITF
+      - id: 105
+        full_name: Daan
+        targetGroup: infra
+        user_class: 5ITF
+      - id: 106
+        full_name: Liam
+        targetGroup: infra
+        user_class: 5ITF
+      - id: 107
+        full_name: Rick
+        targetGroup: infra
+        user_class: 4ITF
+      - id: 108
+        full_name: Louis
+        targetGroup: infra
+        user_class: 6ITF
+      - id: 109
+        full_name: Michael
+        targetGroup: app
+        user_class: 6ITF
+      - id: 110
+        full_name: Lander
+        targetGroup: infra
+        user_class: 6ITF
+      - id: 111
+        full_name: Jordan
+        targetGroup: app
+        user_class: 6ITF
+

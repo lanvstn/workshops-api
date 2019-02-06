@@ -1,0 +1,25 @@
+app:
+  # This is where user accesses the front end app. Used for CORS.
+  # <scheme> "://" <hostname> [ ":" <port> ]
+  allowed_origin: http://127.0.0.1:4200
+
+  # Database connection string, see https://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls
+  db_connectionstring: sqlite:////tmp/workshops-test.db
+
+  # Secret used for authentication token encryption. Change this into a long random string!
+  jwt_secret: default_jwt_secret_change_me_please
+
+  # True if running behind a reverse proxy like nginx which sets X-Forwarded-For headers.
+  enable_proxyfix: true
+
+
+# The settings below are only loaded once during setup.
+init:
+  # The default login password for the admin user. The default set here is "changeme".
+  # You can change the password in the user menu after logging in or set a new PBKDF2_SHA256 hash here.
+  # >>> from passlib.hash import pbkdf2_sha256
+  # >>> pbkdf2_sha256.hash('changeme')
+  admin_identity: $pbkdf2-sha256$29000$dG5tjdGaM4YwBsAY4xwjRA$fhrGuWRiz1lydopjiT/FJ1J/3y0VmPY66dvfnAvnVpE
+
+  # Load data in testdata.py. Enable this for demo.
+  add_testdata: true
