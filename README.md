@@ -18,133 +18,55 @@ It was made as a school project and I am not maintaining or supporting this.
 - Import/export users as CSV
 - Export registrations as Excel with a worksheet for every workshop
 
-## Installing in production
+## Installation guide
 
-There are many ways to deploy this application. This is an example.
+There are many ways to deploy this application. This method is the simplest.
 
-Prerequisites:
+This uses SQLite as your database so it does not scale to more than one node. If you are having performance issues, switch to a database server like MySQL, PostgreSQL or anything listed [here](https://docs.sqlalchemy.org/en/13/core/engines.html).
 
-* Preferably a Linux based server, I haven't tested this on Windows.
-* Python 3 with an up to date pip.
-* SQLite, Postgresql, MySQL or Oracle.
+Things you need before you can start:
 
-I recommend installing the front end first, so you already have an nginx running. You could use the same nginx as you are using for the front end.
+* Ubuntu Server 18.04 (other Linux distros should work as well)
+* Docker on your server ([instructions for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/#install-using-the-repository))
+* This repo
 
-Create a user for workshops-api.
+First, configure the application in `config.yml`. You should definitely change these options:
 
-Clone this project to `/home/workshops-api/workshops-api` and cd into it.
+* `allowed_origin`: the URL for the web app
+* `jwt_secret`: put some random string here
 
-Install dependencies.
-
-    # pip install -r requirements.txt
-
-Install this module. *(note: this project is not in the pip repositories)*
-
-    # pip install .
-
-Configure the app in `config.yml`.
-
-Initialize the database.
-
-    $ ./init.py
-
-**Nginx**
-
-Create a new file in `/etc/nginx/sites-available/workshops-api`
-
+Build the docker image.
 
 ```
-upstream app_server {
-    server unix:/run/gunicorn/socket;
-}
-
-
-server {
-    # CHANGE THIS
-    server_name api.workshops.example.com;
-
-    root /var/www/workshops-api; # empty directory
-
-    location / {
-        try_files $uri @app;
-    }
-
-    location @app {
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $http_host;
-        proxy_redirect off;
-        proxy_pass http://app_server;
-    }
-}
+docker build -t workshops-api .
 ```
 
-Link it to sites-enabled:
-
-    # ln -s /etc/nginx/sites-available/workshops-api /etc/nginx/sites-enabled/workshops-api
-
-[Information about nginx and systemd in the gunicorn docs.](http://docs.gunicorn.org/en/stable/deploy.html#nginx-configuration)
-
-**Systemd**
-
-Create a socket `/etc/systemd/system/gunicorn.socket`
+Create a volume to store the SQLite database in.
 
 ```
-[Unit]
-Description=gunicorn socket
-
-[Socket]
-ListenStream=/run/gunicorn/socket
-
-[Install]
-WantedBy=sockets.target
+docker volume create workshops-db
 ```
 
-And a service `/etc/systemd/system/gunicorn.service`
+Start the container and set it to always restart.
 
 ```
-[Unit]
-Description=gunicorn daemon
-Requires=gunicorn.socket
-After=network.target
-
-[Service]
-PIDFile=/run/gunicorn/pid
-User=workshops-api
-Group=workshops-api
-RuntimeDirectory=gunicorn
-WorkingDirectory=/home/workshops-api/workshops-api
-ExecStart=/usr/local/bin/gunicorn --pid /run/gunicorn/pid   \
-          --bind unix:/run/gunicorn/socket workshops_api.app:app
-ExecReload=/bin/kill -s HUP $MAINPID
-ExecStop=/bin/kill -s TERM $MAINPID
-PrivateTmp=true
-
-[Install]
-WantedBy=multi-user.target
+ docker run -d \
+    --name workshops-api \
+    --mount source=workshops-db,target=/data/db \
+    -p 8000:8080 \
+    --restart always \
+    workshops-api
 ```
 
-Refresh systemd config, enable your new service at boot and start the app.
+The API should be reachable at http://localhost:8000 now.
 
-    # systemctl daemon-reload
-    # systemctl enable gunicorn.socket gunicorn.service 
-    # systemctl start gunicorn.socket gunicorn.service
-    # systemctl restart nginx.service
+Next steps:
 
-Make sure everything is running.
+* Install the web frontend
+* Put nginx or some other reverse proxy in front of it
+* Set up HTTPS
 
-    # systemctl status gunicorn.socket gunicorn.service nginx.service
-
-Try to access the site. If it doesn't work, read the logs.
-
-**Set up HTTPS**
-
-You have no excuse not to use HTTPS. It's free and easy to set up. 
-
-Read the instructions: [Let's encrypt](https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx)
-
-
-## Running for development and testing
+## Development
 
 Install dependencies.
 
